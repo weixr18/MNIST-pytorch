@@ -22,7 +22,7 @@ class Trainer():
                  use_cuda=True, model_path="", module_save_dir="",):
         """setup the module"""
         self.train_dataset, self.valid_dataset = get_dataset(
-            name="MNIST", train=True, valid=True)
+            name="MNIST", net_type=net_type, train=True, valid=True, )
         self.net_type = net_type
 
         self.hyper_params = hyper_params
@@ -103,7 +103,7 @@ class Trainer():
                    criterion, net):
         optimizer.zero_grad()
         outputs = net(inputs)
-        loss = criterion(torch.log(outputs), labels)
+        loss = criterion(torch.log(outputs+1e-7), labels)
         loss.backward()
         optimizer.step()
         return loss
@@ -113,8 +113,8 @@ class Trainer():
         net_type = self.net_type
         if net_type == "LeNet" or net_type == "lenet":
             prefix = "cnn/LeNet"
-        elif net_type == "MLP" or net_type == "mlp":
-            prefix = "mlp/"
+        elif net_type[:3] == "MLP" or net_type[:3] == "mlp":
+            prefix = "mlp/"+net_type
         else:
             prefix = "attention/"
         time_str = time.strftime(

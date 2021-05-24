@@ -12,6 +12,7 @@ from torchsummary import summary
 from src.train import Trainer
 from src.test import Tester
 from src.utils import MODEL_PATH
+from src.config import config
 
 RANDOM_SEED = 1
 USE_CUDA = True
@@ -21,19 +22,10 @@ def train(args):
     if (args.__len__() < 1):
         print("Train: Too few arguments.")
         return
-    train_params = {
-        "batch_size": 64,
-        "epochs": 1,
-        "epoch_lapse": 1,
-        "epoch_save": 20,
-        "use_saved": False,
-    }
-    hyper_params = {
-        "learning_rate": 1e-3,
-        "optimizer": "SGD",
-        # "adam_betas": (0.9, 0.999),
-        "momentum": 0.9,
-    }
+    net_type = args[0]
+    train_params = config[net_type]["train_params"]
+    hyper_params = config[net_type]["hyper_params"]
+
     if(train_params["use_saved"]):
         if len(args) < 2:
             print("Augment-main: no model path.")
@@ -42,7 +34,7 @@ def train(args):
             train_params["model_path"] = MODEL_PATH + \
                 "cnn/" + args[1] + ".pth"
     trainer = Trainer(
-        net_type=args[0],
+        net_type=net_type,
         train_params=train_params,
         hyper_params=hyper_params,
         use_cuda=USE_CUDA,
