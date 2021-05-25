@@ -8,13 +8,13 @@ DATA_PATH = os.path.abspath(WS_PATH + '../data/').replace('\\', '/') + '/'
 
 
 def model_class(model_type):
-    if(model_type == 'mlpmixer'):
-        return 'attention'
+    if(model_type == 'mlpmixer' or model_type == 'vfnet'):
+        return 'fancy'
     elif(model_type[:3] == 'mlp'):
         return 'mlp'
     elif(model_type == 'lenet'):
         return 'cnn'
-    elif(model_type == 'vit' or model_type == 'vfnet'):
+    elif(model_type == 'vit'):
         return 'attention'
     else:
         print("Utils: model {0} not supported.".format(model_type))

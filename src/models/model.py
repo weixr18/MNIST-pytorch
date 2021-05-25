@@ -24,11 +24,6 @@ def get_model(net_type: str = 'lenet', dataset: str = "mnist"):
                    num_patches=n_patches,
                    patch_size=P, num_layers=2)
     elif(net_type == 'vfnet'):
-        P = config[dataset][net_type]["train_params"]["p_len"]
-        n_patches = config[dataset][net_type]["train_params"]["n_patches"]
-        input_channels = config[dataset][net_type]["train_params"]["input_shape"][0]
-        return VFNet(input_channels=input_channels,
-                     num_patches=n_patches,
-                     patch_size=P, num_layers=2)
+        return VFNet(input_shape=input_shape)
 
     pass

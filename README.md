@@ -69,10 +69,11 @@ Condition:
 | Model | Accuracy(%) | Train Speed | Params |
 | :---: | :---: | :---: | :---: |
 | LeNet  | **97.78** | 155 it/s | 21.84k |
-| MLP-3  | 97.60 | 270 it/s | **251.06k** |
+| MLP-3  | 97.60 | 270 it/s | 251.06k |
+| VFNet | 97.32 | 132it/s | 8.49k |
 | VIT-2  | 96.41 | 26.8 it/s | 217.01k |
 | MLP-2  | 96.78 | **542 it/s** | 39.76k |
-| Softmax regression\* | 92.15 | 454 it/s | 7.85k |
-| VFNet | 83.57 | 56.55it/s | 16.21k |
+| Softmax regression\* | 92.15 | 454 it/s | **7.85k** |
+
 
 \* softmax regression \= MLP-1, or one-layer perceptron.

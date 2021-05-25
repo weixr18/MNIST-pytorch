@@ -81,7 +81,7 @@ mnist_config = {
             "batch_size": 64,
             "epochs": 10,
             "epoch_lapse": 1,
-            "epoch_save": 5,
+            "epoch_save": 20,
             "input_shape": [1, 28, 28],
             "p_len": 7,
             "n_patches": 4*4
