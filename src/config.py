@@ -8,7 +8,7 @@ mnist_config = {
             "input_shape": [1, 28, 28],
         },
         "hyper_params": {
-            "learning_rate": 1e-4,
+            "learning_rate": 1e-2,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
@@ -17,7 +17,7 @@ mnist_config = {
     "mlp1": {
         "train_params": {
             "batch_size": 64,
-            "epochs": 15,
+            "epochs": 10,
             "epoch_lapse": 1,
             "epoch_save": 20,
             "input_shape": [1, 28*28],

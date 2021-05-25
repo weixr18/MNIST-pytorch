@@ -13,7 +13,7 @@ python main.py <command> -m <model-type> -d <dataset-name> -n <model-name>
 
 A command could be: train, test, summary, show
 A dataset_name could be: mnist, cifar-10
-A model_type could be: lenet, mlp1, mlp2, mlp3
+A model_type could be: lenet, mlp1, mlp2, mlp3, vit
 
 Example:
 
@@ -38,3 +38,28 @@ python main.py train -d cifar-10 -m lenet
 + saved/: Saved model parameters.
 
 ## Results
+
+### Conditions
+
++ Hardwares
+  + Intel i7-7550U
+  + NVIDIA GeForce MX130
+
+### MNIST
+
+Condition:
+
++ Learning rate: 0.01
++ Optimizer: SGD
++ momentum: 0.9
++ Batch size: 64
++ Epoches: 10
++ Train set size: 50000
+
+|  Model   | Accuracy(%) | Speed | Params
+| :---: | :---: | :---: | :---: |
+| LeNet  | **97.78** | 155 it/s | 21.84k |
+| Softmax regression(MLP-1) | 92.15 | 454 it/s | 7.85k
+| MLP-2  | 96.78 | **542 it/s** | 39.76k
+| MLP-3  | 97.60 | 270 it/s | **251.06k**
+| VIT-2  | 96.41 | 26.8 it/s | 217.01k
