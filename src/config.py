@@ -65,13 +65,13 @@ cifar_10_config = {
     "lenet": {
         "train_params": {
             "batch_size": 64,
-            "epochs": 40,
+            "epochs": 100,
             "epoch_lapse": 5,
-            "epoch_save": 4000,
+            "epoch_save": 20,
             "input_shape": [3, 32, 32],
         },
         "hyper_params": {
-            "learning_rate": 1e-5,
+            "learning_rate": 5e-3,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,

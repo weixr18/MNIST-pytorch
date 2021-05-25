@@ -14,59 +14,53 @@ EPSILON_S = 0.03
 class Tester():
     pass
 
-    def __init__(self, model_name, test_params, use_cuda=True, net_type="lenet",):
+    def __init__(self, model_name, test_params, dataset="mnist", use_cuda=True, net_type="lenet",):
 
         self.net_type = net_type
-        self.dataset = get_dataset(test=True)[0]
+        self.dataset = get_dataset(
+            name=dataset, net_type=net_type, test=True)[0]
         self.test_params = test_params
         self.data_loader = DataLoader(
             dataset=self.dataset,
-            num_workers=self.test_params["threads"],
             batch_size=self.test_params["batch_size"],
             shuffle=False
         )
-        self.net = get_model(net_type=self.net_type)
-        self.epoch = epoch
-        self.net_path = "{0}/{1}/{2}.pth".format(
-            MODEL_PATH, model_class(net_type), model_name
+        self.net = get_model(net_type=self.net_type, dataset=dataset)
+        if use_cuda:
+            self.net = self.net.cuda()
+        self.net_path = "{0}{1}/{2}/{3}.pth".format(
+            MODEL_PATH, dataset, model_class(net_type), model_name
         )
+        print("Test model: ", self.net_path)
         self.net.load_state_dict(torch.load(self.net_path))
         self.use_cuda = use_cuda
         pass
 
     def test(self):
-        total_count = 0
-        total_hit_num = 0
-        fault_count = 0
-        fault_hit_num = 0
+        batch_size = self.test_params["batch_size"]
+        use_cuda = self.use_cuda
 
-        total_hit_num_S = 0
-        fault_hit_num_S = 0
+        total_num = 0
+        correct_num = 0
+        for i, data in enumerate(self.data_loader):
+            with torch.no_grad():
+                b_x, b_y = data
+                if use_cuda:
+                    b_x = b_x.cuda()
+                b_predict_y = self.net(b_x)
+                if use_cuda:
+                    b_predict_y = b_predict_y.cpu()
+                b_y = b_y.numpy()
+                b_predict_y = b_predict_y.numpy()
 
-        with torch.no_grad():
-            for data in self.data_loader:
-                x, y_label = data
-                y_label = torch.unsqueeze(y_label, dim=1)
-                if self.use_cuda:
-                    x = x.cuda()
-                y_pred = self.R(x)
-                if self.use_cuda:
-                    y_pred = y_pred.cpu()
+                total_num += b_y.shape[0]
+                correct_num += self.match_num(b_predict_y, b_y)
+            pass
+        acc = correct_num / total_num
+        print("Test accuracy: ", acc)
+        return acc
 
-                delta_y = torch.abs(y_label - y_pred)
-                flag_hit = delta_y < EPSILON
-                flag_hit_S = delta_y < EPSILON_S
-                flag_fault = y_label < 0.6
-
-                total_count += y_label.shape[0]
-                fault_count += torch.sum(flag_fault).item()
-                total_hit_num += torch.sum(flag_hit).item()
-                fault_hit_num += torch.sum(flag_fault * flag_hit).item()
-                total_hit_num_S += torch.sum(flag_hit_S).item()
-                fault_hit_num_S += torch.sum(flag_fault * flag_hit_S).item()
-
-        return[self.epoch,
-               total_hit_num / total_count,
-               total_hit_num_S / total_count,
-               fault_hit_num / fault_count,
-               fault_hit_num_S / fault_count]
+    def match_num(self, y_pred, y_label):
+        y_pred_i = np.argmax(y_pred, axis=1)
+        tmp = sum(y_pred_i == y_label)
+        return tmp

@@ -43,6 +43,7 @@ class MNIST(Dataset):
             self.x = self.x[-10000:]
             self.y = self.y[-10000:]
 
+        self.x = self.x / 255.0
         self.x = torch.Tensor(self.x)
         self.y = torch.Tensor(self.y).long()
 
@@ -104,25 +105,12 @@ class CIFAR10(Dataset):
         else:
             self.x = self.x.reshape(-1, 3, 32, 32)
 
+        self.x = self.x / 255.0
         self.x = torch.Tensor(self.x)
         self.y = torch.Tensor(self.y).long()
 
         # self._load_meta()
         pass
-
-    # def _load_meta(self):
-    #     path = os.path.join(self.root, self.base_folder, self.meta['filename'])
-    #     if not check_integrity(path, self.meta['md5']):
-    #         raise RuntimeError('Dataset metadata file not found or corrupted.' +
-    #                            ' You can use download=True to download it')
-    #     with open(path, 'rb') as infile:
-    #         if sys.version_info[0] == 2:
-    #             data = pickle.load(infile)
-    #         else:
-    #             data = pickle.load(infile, encoding='latin1')
-    #         self.classes = data[self.meta['key']]
-    #     self.class_to_idx = {_class: i for i,
-    #                          _class in enumerate(self.classes)}
 
     def __getitem__(self, index):
         return self.x[index], self.y[index]
@@ -138,7 +126,7 @@ DATASETS = {
 
 
 def get_dataset(
-        name: str = "MNIST", net_type="lenet",
+        name: str = "mnist", net_type="lenet",
         train: bool = False, valid: bool = False,
         test: bool = False,):
     dataset = DATASETS[name]
