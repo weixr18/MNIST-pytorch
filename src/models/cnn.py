@@ -3,10 +3,15 @@ import torch.nn as nn
 
 
 class LeNet(nn.Module):
-    def __init__(self):
+    fc_input_size = {
+        (1, 28, 28): 320,
+        (3, 32, 32): 500,
+    }
+
+    def __init__(self, input_shape=[1, 28, 28]):
         super(LeNet, self).__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d(1, 10, kernel_size=5),
+            nn.Conv2d(input_shape[0], 10, kernel_size=5),
             nn.MaxPool2d(kernel_size=2),
             nn.LeakyReLU(),
         )
@@ -16,8 +21,9 @@ class LeNet(nn.Module):
             nn.MaxPool2d(kernel_size=2),
             nn.LeakyReLU(),
         )
+        fc_size = self.fc_input_size[tuple(input_shape)]
         self.fc1 = nn.Sequential(
-            nn.Linear(320, 50),
+            nn.Linear(fc_size, 50),
             nn.LeakyReLU(inplace=True),
         )
         self.fc2 = nn.Sequential(

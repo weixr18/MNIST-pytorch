@@ -40,7 +40,7 @@ class Trainer():
         )
 
         self.use_cuda = use_cuda
-        self.net = get_model(net_type=self.net_type)
+        self.net = get_model(net_type=self.net_type, dataset=dataset)
         if use_cuda:
             self.net = self.net.cuda()
 

@@ -8,12 +8,13 @@ import torch.optim as optim
 import torch.nn as nn
 import matplotlib.pyplot as plt
 import numpy as np
-from torchsummary import summary
+import torchsummary
 
 from src.train import Trainer
 from src.test import Tester
 from src.utils import MODEL_PATH, model_class
 from src.config import config
+from src.models.model import get_model
 
 
 RANDOM_SEED = 1
@@ -42,14 +43,12 @@ def train(model_type, dataset, model_name):
     trainer.train()
 
 
-def summary(model_type):
-    train_params = {
-        "batch_size": 64,
-        "input_shape": [1, 28, 28]
-    }
-    batch_size = train_params["batch_size"]
-    input_size = train_params["input_shape"]
-    summary(self.net, (3, input_size), batch_size)
+def summary(model_type, dataset):
+    batch_size = config[dataset][model_type]["train_params"]["batch_size"]
+    input_shape = config[dataset][model_type]["train_params"]["input_shape"]
+    net = get_model(net_type=model_type, dataset=dataset)
+    print("Summary of model {0} on dataset {1}:".format(model_type, dataset))
+    torchsummary.summary(net, tuple(input_shape), batch_size, device="cpu")
     pass
 
 
@@ -105,4 +104,4 @@ if __name__ == "__main__":
     elif(args.command == "test"):
         test(args.model_type, args.dataset, args.model_name)
     elif(args.command == "summary"):
-        summary(args.model_type)
+        summary(args.model_type, args.dataset)

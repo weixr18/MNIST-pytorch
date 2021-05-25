@@ -1,23 +1,21 @@
 import os
+import sys
 import struct
+import pickle
 
 import torchvision
 import numpy as np
 import torch
 from torch.utils.data import Dataset
 
-from .utils import model_class
+from .utils import model_class, DATA_PATH
 
 
 class MNIST(Dataset):
-    def __init__(self, mode: str, net_class='lenet'):
+    def __init__(self, mode: str, net_class='cnn'):
 
         super(MNIST, self).__init__()
-
-        current_path = os.path.abspath(__file__)
-        dir_path = os.path.abspath(
-            os.path.dirname(current_path) + os.path.sep + ".")
-        dir_path += '\\..\\data\\mnist'
+        dir_path = DATA_PATH + '/mnist/'
 
         if mode == 'train' or mode == 'valid':
             labels_path = os.path.join(dir_path, 'train-labels-idx1-ubyte')
@@ -56,26 +54,86 @@ class MNIST(Dataset):
     pass
 
 
-class CIFAR_10(Dataset):
-    def __init__(self, net_class='lenet'):
-        train_data = torchvision.datasets.CIFAR10(
-            root='./data/cifar-10',
-            train=True,
-            transform=torchvision.transforms.ToTensor(),
-            download=False,
-        )
+class CIFAR10(Dataset):
+    train_list = [
+        'data_batch_2', 'data_batch_3', 'data_batch_4', 'data_batch_5'
+    ]
+    valid_list = [
+        'data_batch_1',
+    ]
+    test_list = [
+        'test_batch'
+    ]
+    meta = {
+        'filename': 'batches.meta',
+        'key': 'label_names',
+        'md5': '5ff9c542aee3614f3951f8cda6e48888',
+    }
+
+    def __init__(self, mode: str, net_class='cnn'):
+
+        super(CIFAR10, self).__init__()
+        if mode == 'train':
+            downloaded_list = self.train_list
+        elif mode == 'valid':
+            downloaded_list = self.valid_list
+        else:
+            downloaded_list = self.test_list
+
+        self.x = []
+        self.y = []
+        dir_path = DATA_PATH + 'cifar-10/'
+
+        # now load the picked numpy arrays
+        for file_name in downloaded_list:
+            file_path = os.path.join(dir_path, file_name)
+            with open(file_path, 'rb') as f:
+                if sys.version_info[0] == 2:
+                    entry = pickle.load(f)
+                else:
+                    entry = pickle.load(f, encoding='latin1')
+                self.x.append(entry['data'])
+                if 'labels' in entry:
+                    self.y.extend(entry['labels'])
+                else:
+                    self.y.extend(entry['fine_labels'])
+
+        self.x = np.vstack(self.x)
+        if net_class == 'mlp':
+            self.x = self.x.reshape(-1, 3*32*32)
+        else:
+            self.x = self.x.reshape(-1, 3, 32, 32)
+
+        self.x = torch.Tensor(self.x)
+        self.y = torch.Tensor(self.y).long()
+
+        # self._load_meta()
         pass
+
+    # def _load_meta(self):
+    #     path = os.path.join(self.root, self.base_folder, self.meta['filename'])
+    #     if not check_integrity(path, self.meta['md5']):
+    #         raise RuntimeError('Dataset metadata file not found or corrupted.' +
+    #                            ' You can use download=True to download it')
+    #     with open(path, 'rb') as infile:
+    #         if sys.version_info[0] == 2:
+    #             data = pickle.load(infile)
+    #         else:
+    #             data = pickle.load(infile, encoding='latin1')
+    #         self.classes = data[self.meta['key']]
+    #     self.class_to_idx = {_class: i for i,
+    #                          _class in enumerate(self.classes)}
 
     def __getitem__(self, index):
         return self.x[index], self.y[index]
 
     def __len__(self):
-        return self.y.shape[0]
+        return len(self.y)
 
 
 DATASETS = {
     "mnist": MNIST,
-    "cifar-10": CIFAR_10,
+    "cifar-10": CIFAR10,
 }
 
 

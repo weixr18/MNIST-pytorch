@@ -1,12 +1,20 @@
 import torch
 import torch.nn as nn
 
+input_size = {
+    (1, 28, 28): 1*28*28,
+    (1, 28*28): 1*28*28,
+    (3, 32, 32): 3*32*32,
+    (1, 3*32*32): 3*32*32,
+}
+
 
 class MLP_1(nn.Module):
-    def __init__(self):
+    def __init__(self, input_shape=[1, 28, 28]):
         super(MLP_1, self).__init__()
+        fc_shape = input_size[tuple(input_shape)]
         self.fc = nn.Sequential(
-            nn.Linear(28*28, 10),
+            nn.Linear(fc_shape, 10),
             nn.Softmax(dim=1)
         )
 
@@ -16,10 +24,11 @@ class MLP_1(nn.Module):
 
 
 class MLP_2(nn.Module):
-    def __init__(self):
+    def __init__(self, input_shape=[1, 28, 28]):
         super(MLP_2, self).__init__()
+        fc_shape = input_size[tuple(input_shape)]
         self.fc1 = nn.Sequential(
-            nn.Linear(28*28, 50),
+            nn.Linear(fc_shape, 50),
             nn.LeakyReLU(inplace=True),
         )
         self.fc2 = nn.Sequential(
@@ -34,10 +43,11 @@ class MLP_2(nn.Module):
 
 
 class MLP_3(nn.Module):
-    def __init__(self):
+    def __init__(self, input_shape=[1, 28, 28]):
         super(MLP_3, self).__init__()
+        fc_shape = input_size[tuple(input_shape)]
         self.fc1 = nn.Sequential(
-            nn.Linear(28*28, 300),
+            nn.Linear(fc_shape, 300),
             nn.LeakyReLU(inplace=True),
         )
         self.fc2 = nn.Sequential(

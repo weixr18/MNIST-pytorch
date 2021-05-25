@@ -4,6 +4,7 @@ WS_PATH = os.path.abspath(
     os.path.dirname(os.path.abspath(__file__)) + os.path.sep + "."
 ).replace('\\', '/') + '/'
 MODEL_PATH = os.path.abspath(WS_PATH + '../saved/').replace('\\', '/') + '/'
+DATA_PATH = os.path.abspath(WS_PATH + '../data/').replace('\\', '/') + '/'
 
 
 def model_class(model_type):
@@ -15,3 +16,4 @@ def model_class(model_type):
         return 'attention'
     else:
         print("Utils: model {0} not supported.".format(model_type))
+        return None
