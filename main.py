@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 
 import torch
 import torchvision
@@ -11,41 +12,37 @@ from torchsummary import summary
 
 from src.train import Trainer
 from src.test import Tester
-from src.utils import MODEL_PATH
+from src.utils import MODEL_PATH, model_class
 from src.config import config
+
 
 RANDOM_SEED = 1
 USE_CUDA = True
 
 
-def train(args):
-    if (args.__len__() < 1):
-        print("Train: Too few arguments.")
-        return
-    net_type = args[0]
-    train_params = config[net_type]["train_params"]
-    hyper_params = config[net_type]["hyper_params"]
+def train(model_type, dataset, model_name):
+    net_type = model_type
+    train_params = config[dataset][net_type]["train_params"]
+    hyper_params = config[dataset][net_type]["hyper_params"]
 
-    if(train_params["use_saved"]):
-        if len(args) < 2:
-            print("Augment-main: no model path.")
-            return
-        else:
-            train_params["model_path"] = MODEL_PATH + \
-                "cnn/" + args[1] + ".pth"
+    if(model_name is not None):
+        train_params["model_path"] = "{0}/{1}/{2}.pth".format(
+            MODEL_PATH, model_class(model_type), model_name
+        )
     trainer = Trainer(
+        dataset=dataset,
         net_type=net_type,
         train_params=train_params,
         hyper_params=hyper_params,
         use_cuda=USE_CUDA,
     )
-    print("Model ready.")
+    print("Model {0} ready on dataset {1}.".format(net_type, dataset))
     print(hyper_params)
     print(train_params)
     trainer.train()
 
 
-def summary(args):
+def summary(model_type):
     train_params = {
         "batch_size": 64,
         "input_shape": [1, 28, 28]
@@ -56,17 +53,16 @@ def summary(args):
     pass
 
 
-def test(args):
-    if(args.__len__() < 2):
-        print("Augment-main: too few arguments.")
-        return
+def test(model_type, dataset, model_name):
+    if model_name is None:
+        print("Test: model name not found.")
     test_params = {
         "batch_size": 64,
     }
     tester = Tester(
-        net_type=args[0],
-        model_path=MODEL_PATH + "cnn/",
-        model_name=args[1],
+        dataset=dataset,
+        net_type=model_type,
+        model_name=model_name,
         test_params=test_params,
         use_cuda=True
     )
@@ -74,7 +70,7 @@ def test(args):
     pass
 
 
-def show(args):
+def show(model_type, dataset, model_name):
     # fig = plt.figure()
     # for i in range(6):
     #     plt.subplot(2, 3, i+1)
@@ -87,18 +83,26 @@ def show(args):
     pass
 
 
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("command", help="'train', 'test', 'summary' or 'show'")
+    parser.add_argument("-d", "--dataset",
+                        help="dataset name", default='mnist')
+    parser.add_argument("-m", "--model-type",
+                        help="model type", default='lenet')
+    parser.add_argument("-n", "--model-name",
+                        help="model name")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
+    args = get_args()
     torch.manual_seed(RANDOM_SEED)
-    args = sys.argv
-    if (args.__len__() < 2):
-        print("Too few arguments.")
-    else:
-        if (args[1] == "train"):
-            train(args[2:])
-        elif(args[1] == "show"):
-            show(args[2:])
-        elif(args[1] == "test"):
-            test(args[2:])
-        elif(args[1] == "summary"):
-            summary(args[2:])
-    pass
+    if (args.command == "train"):
+        train(args.model_type, args.dataset, args.model_name)
+    elif(args.command == "show"):
+        show(args.model_type, args.dataset, args.model_name)
+    elif(args.command == "test"):
+        test(args.model_type, args.dataset, args.model_name)
+    elif(args.command == "summary"):
+        summary(args.model_type)

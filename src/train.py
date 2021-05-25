@@ -11,20 +11,21 @@ from torch.utils.data import DataLoader
 from .models.model import get_model
 from .data import get_dataset
 from .validate import Validator
-from .utils import MODEL_PATH
+from .utils import MODEL_PATH, model_class
 
 SHOW_NET = False
 
 
 class Trainer():
 
-    def __init__(self, net_type="LeNet", train_params=None, hyper_params=None,
+    def __init__(self, dataset="mnist", net_type="lenet", train_params=None, hyper_params=None,
                  use_cuda=True, model_path="", module_save_dir="",):
         """setup the module"""
         self.train_dataset, self.valid_dataset = get_dataset(
-            name="MNIST", net_type=net_type, train=True, valid=True, )
+            name=dataset, net_type=net_type, train=True, valid=True, )
         self.net_type = net_type
 
+        self.dataset_name = dataset
         self.hyper_params = hyper_params
         self.train_params = train_params
         self.train_data_loader = DataLoader(
@@ -109,17 +110,13 @@ class Trainer():
         return loss
 
     def save_model(self, name_else=""):
-
         net_type = self.net_type
-        if net_type == "LeNet" or net_type == "lenet":
-            prefix = "cnn/LeNet"
-        elif net_type[:3] == "MLP" or net_type[:3] == "mlp":
-            prefix = "mlp/"+net_type
-        else:
-            prefix = "attention/"
         time_str = time.strftime(
             "%Y%m%d_%H%M%S", time.localtime())
-        name = prefix + "_" + time_str + "_" + name_else + ".pth"
+        name = "{0}/{1}/{2}_{3}_{4}.pth".format(
+            self.dataset_name, model_class(net_type),  net_type,
+            time_str, name_else
+        )
         torch.save(self.net.state_dict(), MODEL_PATH + name)
         print("model saved:", name)
         pass

@@ -1,13 +1,16 @@
 import os
 import struct
 
+import torchvision
 import numpy as np
 import torch
 from torch.utils.data import Dataset
 
+from .utils import model_class
+
 
 class MNIST(Dataset):
-    def __init__(self, mode: str, net_type='LeNet'):
+    def __init__(self, mode: str, net_class='lenet'):
 
         super(MNIST, self).__init__()
 
@@ -30,7 +33,7 @@ class MNIST(Dataset):
         with open(images_path, 'rb') as imgpath:
             _, __, ___, ____ = struct.unpack('>IIII', imgpath.read(16))
             self.x = np.fromfile(imgpath, dtype=np.uint8)
-        if net_type == 'MLP':
+        if net_class == 'mlp':
             self.x = self.x.reshape([-1, 28*28])
         else:
             self.x = self.x.reshape([-1, 1, 28, 28])
@@ -53,27 +56,41 @@ class MNIST(Dataset):
     pass
 
 
+class CIFAR_10(Dataset):
+    def __init__(self, net_class='lenet'):
+        train_data = torchvision.datasets.CIFAR10(
+            root='./data/cifar-10',
+            train=True,
+            transform=torchvision.transforms.ToTensor(),
+            download=False,
+        )
+        pass
+
+    def __getitem__(self, index):
+        return self.x[index], self.y[index]
+
+    def __len__(self):
+        return self.y.shape[0]
+
+
 DATASETS = {
-    "MNIST": MNIST,
+    "mnist": MNIST,
+    "cifar-10": CIFAR_10,
 }
 
 
 def get_dataset(
-        name: str = "MNIST", net_type="LeNet",
+        name: str = "MNIST", net_type="lenet",
         train: bool = False, valid: bool = False,
         test: bool = False,):
     dataset = DATASETS[name]
     res = []
-
-    if net_type[:3] == "mlp" or net_type[:3] == "MLP":
-        net_type = "MLP"
-    elif net_type[:3] == "LeNet" or net_type[:3] == "lenet":
-        net_type = "LeNet"
+    net_class = model_class(net_type)
 
     if train:
-        res.append(dataset('train', net_type=net_type))
+        res.append(dataset('train', net_class=net_class))
     if valid:
-        res.append(dataset('valid', net_type=net_type))
+        res.append(dataset('valid', net_class=net_class))
     if test:
-        res.append(dataset('test', net_type=net_type))
+        res.append(dataset('test', net_class=net_class))
     return tuple(res)

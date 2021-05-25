@@ -1,8 +1,20 @@
 # MNIST-pytorch
 
-Train various models on MNIST!
+Train various models on MNIST and other datasets!
 
 ## Requirements
+
+## Commands
+
+Useage:
+
+```sh
+python main.py <command> -m <model-type> -d <dataset-name> -n <model-name>
+```
+
+command could be: train, test, summary, show
+dataset_name could be: mnist, cifar-10
+model_type could be: lenet, mlp1, mlp2, mlp3
 
 ## Files
 
@@ -10,18 +22,4 @@ Train various models on MNIST!
 + data/mnist/: data
 + saved/: saved model parameters
 
-## Models
-
-+ cnn
-  + LeNet
-+ mlp
-+ attention
-+ ml
-
-## Commands
-
-Train:
-
-```sh
-python main.py train <model-type>
-```
+## Results
