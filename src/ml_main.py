@@ -40,8 +40,8 @@ def run_knn(train_X, train_y, test_X, test_y):
 def run_rf(train_X, train_y, test_X, test_y):
     # random forest
     param_rf = {
-        'n_estimators': 1000,
-        'max_depth':  100,
+        'n_estimators': 100,
+        'max_depth':  10,
         'max_features': 'sqrt',
     }
     print("Training Random Forest classifier...")
@@ -68,8 +68,8 @@ def run_ml(dataset):
     train_X, train_y = train_set.get_numpy_data()
     test_X, test_y = test_set.get_numpy_data()
 
-    runs = [run_svm, run_knn, run_rf, run_nb]
-    # runs = [run_nb]
+    # runs = [run_svm, run_knn, run_rf, run_nb]
+    runs = [run_rf, ]
 
     for run in runs:
         time_start = time.time()

@@ -53,6 +53,9 @@ class Trainer():
             self.optimizer = torch.optim.Adam(
                 self.net.parameters(), lr=self.hyper_params["learning_rate"],
             )
+        self.scheduler = torch.optim.lr_scheduler.MultiStepLR(
+            self.optimizer, milestones=self.hyper_params["milestones"],
+            gamma=self.hyper_params["lr_decay"], last_epoch=-1)
 
         self.criterion = torch.nn.NLLLoss()
         self.v = Validator(net=self.net,
@@ -74,6 +77,7 @@ class Trainer():
 
         for _ in range(1, epochs+1):
             total_loss = 0
+            self.scheduler.step()
             for data in tqdm(self.train_data_loader, ascii=True, ncols=120):
                 batch_train_x, batch_train_y = data
                 if self.use_cuda:
