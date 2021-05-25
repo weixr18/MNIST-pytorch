@@ -75,6 +75,23 @@ mnist_config = {
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
         }
+    },
+    "vfnet": {
+        "train_params": {
+            "batch_size": 64,
+            "epochs": 10,
+            "epoch_lapse": 1,
+            "epoch_save": 5,
+            "input_shape": [1, 28, 28],
+            "p_len": 7,
+            "n_patches": 4*4
+        },
+        "hyper_params": {
+            "learning_rate": 1e-2,
+            "optimizer": "SGD",
+            # "adam_betas": (0.9, 0.999),
+            "momentum": 0.9,
+        }
     }
 }
 
