@@ -7,12 +7,12 @@ import torchsummary
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 from src.train import Trainer
 from src.test import Tester
 from src.utils import MODEL_PATH, model_class
 from src.config import config
 from src.models.model import get_model
+from src.ml_main import run_ml
 
 
 RANDOM_SEED = 1
@@ -95,7 +95,9 @@ def get_args():
 if __name__ == "__main__":
     args = get_args()
     torch.manual_seed(RANDOM_SEED)
-    if (args.command == "train"):
+    if(args.model_type == "ml"):
+        run_ml(args.dataset)
+    elif (args.command == "train"):
         train(args.model_type, args.dataset, args.model_name)
     elif(args.command == "show"):
         show(args.model_type, args.dataset, args.model_name)

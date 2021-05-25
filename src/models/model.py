@@ -25,5 +25,12 @@ def get_model(net_type: str = 'lenet', dataset: str = "mnist"):
                    patch_size=P, num_layers=2)
     elif(net_type == 'vfnet'):
         return VFNet(input_shape=input_shape)
+    elif(net_type == 'mlpmixer'):
+        P = config[dataset][net_type]["train_params"]["p_len"]
+        hidden_dim_1 = config[dataset][net_type]["train_params"]["hidden_dim_1"]
+        hidden_dim_2 = config[dataset][net_type]["train_params"]["hidden_dim_2"]
+        return MLPMixer(input_size=input_shape, patch_size=P,
+                        hidden_dim_1=hidden_dim_1, hidden_dim_2=hidden_dim_2,
+                        num_classes=10, num_layers=2,)
 
     pass

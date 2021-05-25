@@ -66,14 +66,17 @@ Condition:
 + Epoches: 10
 + Train set size: 50000
 
-| Model | Accuracy(%) | Train Speed | Params |
-| :---: | :---: | :---: | :---: |
-| LeNet  | **97.78** | 155 it/s | 21.84k |
-| MLP-3  | 97.60 | 270 it/s | 251.06k |
-| VFNet | 97.32 | 132it/s | 8.49k |
-| VIT-2  | 96.41 | 26.8 it/s | 217.01k |
-| MLP-2  | 96.78 | **542 it/s** | 39.76k |
-| Softmax regression\* | 92.15 | 454 it/s | **7.85k** |
-
+| Model | Accuracy(%) | Train Time(s) | Train Speed(iter/s) | Params |
+| :---: | :---: | :---: | :---: | :---: |
+| SVM  | **98.23** | 165.13 | -- | -- |
+| LeNet  | 97.78 | 50.42 | 155.32 | 21.84k |
+| MLP-3  | 97.60 | 28.94 | 270.94 | 251.06k |
+| VFNet | 97.32 | 59.27 | 132.28 | 8.49k |
+| Random Forest | 97.09 | 310.36 | -- | -- |
+| kNN  | 97.08 | **11.74** | -- | -- |
+| MLP-Mixer | 96.90 | 127.78 | 61.29  | 20.47k |
+| VIT-2  | 96.41 | 291.79 | 26.82 | 217.01k |
+| MLP-2  | 96.78 | 23.25 | 336.30 | 39.76k |
+| Softmax regression\* | 92.15 | 17.22 | 454.07 | **7.85k** |
 
 \* softmax regression \= MLP-1, or one-layer perceptron.

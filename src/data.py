@@ -49,6 +49,9 @@ class MNIST(Dataset):
         self.x = torch.Tensor(self.x)
         self.y = torch.Tensor(self.y).long()
 
+    def get_numpy_data(self):
+        return self.x.numpy(), self.y.numpy()
+
     def __getitem__(self, index):
         return self.x[index], self.y[index]
 
@@ -115,6 +118,9 @@ class CIFAR10(Dataset):
 
         # self._load_meta()
         pass
+
+    def get_numpy_data(self):
+        return self.x.numpy(), self.y.numpy()
 
     def __getitem__(self, index):
         return self.x[index], self.y[index]
