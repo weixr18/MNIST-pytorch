@@ -2,7 +2,6 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-import torchvision.transforms as T
 
 
 class Validator():

@@ -3,12 +3,10 @@ import sys
 import argparse
 
 import torch
-import torchvision
-import torch.optim as optim
-import torch.nn as nn
+import torchsummary
 import matplotlib.pyplot as plt
 import numpy as np
-import torchsummary
+
 
 from src.train import Trainer
 from src.test import Tester
@@ -19,6 +17,15 @@ from src.models.model import get_model
 
 RANDOM_SEED = 1
 USE_CUDA = True
+
+
+def summary(model_type, dataset):
+    batch_size = config[dataset][model_type]["train_params"]["batch_size"]
+    input_shape = config[dataset][model_type]["train_params"]["input_shape"]
+    net = get_model(net_type=model_type, dataset=dataset)
+    print("Summary of model {0} on dataset {1}:".format(model_type, dataset))
+    torchsummary.summary(net, tuple(input_shape), batch_size, device="cpu")
+    pass
 
 
 def train(model_type, dataset, model_name):
@@ -41,15 +48,6 @@ def train(model_type, dataset, model_name):
     print(hyper_params)
     print(train_params)
     trainer.train()
-
-
-def summary(model_type, dataset):
-    batch_size = config[dataset][model_type]["train_params"]["batch_size"]
-    input_shape = config[dataset][model_type]["train_params"]["input_shape"]
-    net = get_model(net_type=model_type, dataset=dataset)
-    print("Summary of model {0} on dataset {1}:".format(model_type, dataset))
-    torchsummary.summary(net, tuple(input_shape), batch_size, device="cpu")
-    pass
 
 
 def test(model_type, dataset, model_name):

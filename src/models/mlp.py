@@ -10,6 +10,11 @@ input_size = {
 
 
 class MLP_1(nn.Module):
+    """
+    Note: 1 full connect layer is not "multy" layer perceptron.
+    Usually, it is called "Softmax Regression".
+    """
+
     def __init__(self, input_shape=[1, 28, 28]):
         super(MLP_1, self).__init__()
         fc_shape = input_size[tuple(input_shape)]

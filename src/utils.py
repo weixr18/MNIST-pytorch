@@ -12,7 +12,7 @@ def model_class(model_type):
         return 'mlp'
     elif(model_type == 'lenet'):
         return 'cnn'
-    elif(model_type == 'attention'):
+    elif(model_type == 'vit'):
         return 'attention'
     else:
         print("Utils: model {0} not supported.".format(model_type))

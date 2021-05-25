@@ -23,7 +23,7 @@ mnist_config = {
             "input_shape": [1, 28*28],
         },
         "hyper_params": {
-            "learning_rate": 5e-6,
+            "learning_rate": 5e-3,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
@@ -38,7 +38,7 @@ mnist_config = {
             "input_shape": [1, 28*28],
         },
         "hyper_params": {
-            "learning_rate": 5e-6,
+            "learning_rate": 5e-3,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
@@ -53,7 +53,24 @@ mnist_config = {
             "input_shape": [1, 28*28],
         },
         "hyper_params": {
-            "learning_rate": 5e-6,
+            "learning_rate": 5e-3,
+            "optimizer": "SGD",
+            # "adam_betas": (0.9, 0.999),
+            "momentum": 0.9,
+        }
+    },
+    "vit": {
+        "train_params": {
+            "batch_size": 16,
+            "epochs": 10,
+            "epoch_lapse": 1,
+            "epoch_save": 20,
+            "input_shape": [1, 28, 28],
+            "p_len": 7,
+            "n_patches": 4*4
+        },
+        "hyper_params": {
+            "learning_rate": 1e-2,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
@@ -86,7 +103,7 @@ cifar_10_config = {
             "input_shape": [1, 3*32*32],
         },
         "hyper_params": {
-            "learning_rate": 5e-6,
+            "learning_rate": 5e-3,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
@@ -101,7 +118,7 @@ cifar_10_config = {
             "input_shape": [1, 3*32*32],
         },
         "hyper_params": {
-            "learning_rate": 5e-6,
+            "learning_rate": 5e-3,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
@@ -116,7 +133,7 @@ cifar_10_config = {
             "input_shape": [1, 3*32*32],
         },
         "hyper_params": {
-            "learning_rate": 5e-6,
+            "learning_rate": 5e-3,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,

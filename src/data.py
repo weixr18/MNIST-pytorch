@@ -3,19 +3,21 @@ import sys
 import struct
 import pickle
 
+import torch
 import torchvision
 import numpy as np
-import torch
 from torch.utils.data import Dataset
 
 from .utils import model_class, DATA_PATH
+from .config import config
 
 
 class MNIST(Dataset):
-    def __init__(self, mode: str, net_class='cnn'):
+    def __init__(self, mode: str, net_type='mnist'):
 
         super(MNIST, self).__init__()
         dir_path = DATA_PATH + '/mnist/'
+        net_class = model_class(net_type)
 
         if mode == 'train' or mode == 'valid':
             labels_path = os.path.join(dir_path, 'train-labels-idx1-ubyte')
@@ -71,9 +73,11 @@ class CIFAR10(Dataset):
         'md5': '5ff9c542aee3614f3951f8cda6e48888',
     }
 
-    def __init__(self, mode: str, net_class='cnn'):
+    def __init__(self, mode: str, net_type='lenet'):
 
         super(CIFAR10, self).__init__()
+
+        net_class = model_class(net_type)
         if mode == 'train':
             downloaded_list = self.train_list
         elif mode == 'valid':
@@ -131,12 +135,11 @@ def get_dataset(
         test: bool = False,):
     dataset = DATASETS[name]
     res = []
-    net_class = model_class(net_type)
 
     if train:
-        res.append(dataset('train', net_class=net_class))
+        res.append(dataset('train', net_type=net_type))
     if valid:
-        res.append(dataset('valid', net_class=net_class))
+        res.append(dataset('valid', net_type=net_type))
     if test:
-        res.append(dataset('test', net_class=net_class))
+        res.append(dataset('test', net_type=net_type))
     return tuple(res)
