@@ -87,8 +87,8 @@ class TransformerEncoder(nn.Module):
 
 
 class VIT(nn.Module):
-    def __init__(self, input_channels, num_patches, patch_size, hidden_dim=64,
-                 num_classes=10, num_layers=10):
+    def __init__(self, input_channels=3, num_patches=16, patch_size=8, hidden_dim=64,
+                 num_classes=10, num_layers=2):
         super(VIT, self).__init__()
 
         dim = patch_size*patch_size
@@ -104,13 +104,16 @@ class VIT(nn.Module):
 
         self.mlp_head = nn.Sequential(
             nn.LayerNorm(dim),
-            nn.Linear(dim, num_classes)
+            nn.Linear(dim, num_classes),
+            nn.Softmax(dim=1)
         )
 
     def forward(self, x):
         # input: [B, C, H, W]
-        x = self.chunking(x)  # now: [B, P*P, H/P, W/P]
-        x = rearrange(x, 'b c h w -> b (h w) c')  # now: [B, (H/P*W/P), (P*P),]
+        x = self.chunking(x)
+        # now: [B, P*P, H/P, W/P]
+        x = rearrange(x, 'b c h w -> b (h w) c')
+        # now: [B, N=(H/P*W/P), D=(P*P),]
 
         # concatenate class tokens
         cls_tokens = repeat(self.cls, '() n d -> b n d', b=x.shape[0])
