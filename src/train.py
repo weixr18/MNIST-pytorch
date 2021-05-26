@@ -18,8 +18,9 @@ SHOW_NET = False
 
 class Trainer():
 
-    def __init__(self, dataset="mnist", net_type="lenet", train_params=None, hyper_params=None,
-                 use_cuda=True, model_path="", module_save_dir="",):
+    def __init__(self, dataset="mnist", net_type="lenet",
+                 train_params=None, hyper_params=None,
+                 use_cuda=True,):
         """setup the module"""
         self.train_dataset, self.valid_dataset = get_dataset(
             name=dataset, net_type=net_type, train=True, valid=True, )
@@ -43,6 +44,10 @@ class Trainer():
         self.net = get_model(net_type=self.net_type, dataset=dataset)
         if use_cuda:
             self.net = self.net.cuda()
+
+        if "model_path" in self.train_params.keys():
+            self.net.load_state_dict(torch.load(
+                self.train_params["model_path"]))
 
         if(self.hyper_params["optimizer"] == "SGD"):
             self.optimizer = torch.optim.SGD(

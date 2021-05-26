@@ -34,8 +34,8 @@ def train(model_type, dataset, model_name):
     hyper_params = config[dataset][net_type]["hyper_params"]
 
     if(model_name is not None):
-        train_params["model_path"] = "{0}/{1}/{2}.pth".format(
-            MODEL_PATH, model_class(model_type), model_name
+        train_params["model_path"] = "{0}{1}/{2}/{3}.pth".format(
+            MODEL_PATH, dataset, model_class(net_type), model_name
         )
     trainer = Trainer(
         dataset=dataset,

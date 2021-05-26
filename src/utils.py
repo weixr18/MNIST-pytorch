@@ -8,7 +8,7 @@ DATA_PATH = os.path.abspath(WS_PATH + '../data/').replace('\\', '/') + '/'
 
 
 def model_class(model_type):
-    if(model_type == 'mlpmixer' or model_type == 'vfnet'):
+    if(model_type == 'mlpmixer' or model_type[:5] == 'vfnet'):
         return 'fancy'
     elif(model_type[:3] == 'mlp'):
         return 'mlp'

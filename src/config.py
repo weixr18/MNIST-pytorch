@@ -184,12 +184,12 @@ cifar_10_config = {
     "vit": {
         "train_params": {
             "batch_size": 64,
-            "epochs": 50,
-            "epoch_lapse": 5,
+            "epochs": 80,
+            "epoch_lapse": 2,
             "epoch_save": 25,
             "input_shape": [3, 32, 32],
-            "p_len": 7,
-            "n_patches": 4*4
+            "p_len": 4,
+            "n_patches": 8*8
         },
         "hyper_params": {
             "learning_rate": 1e-3,
@@ -197,10 +197,10 @@ cifar_10_config = {
             "optimizer": "Adam",
             "adam_betas": (0.9, 0.999),
             # "momentum": 0.9,
-            "milestones": [20, 40, 60],
+            "milestones": [5, 10, 15, 20, 25, 30, 35, 40, 45],
         }
     },
-    "vfnet": {
+    "vfneta": {
         "train_params": {
             "batch_size": 64,
             "epochs": 50,
@@ -214,7 +214,24 @@ cifar_10_config = {
             "optimizer": "Adam",
             "adam_betas": (0.9, 0.999),
             # "momentum": 0.9,
-            "milestones": [20, 40, 60],
+            "milestones": [10, 20, 30, 40, 50],
+        }
+    },
+    "vfnetb": {
+        "train_params": {
+            "batch_size": 64,
+            "epochs": 50,
+            "epoch_lapse": 5,
+            "epoch_save": 25,
+            "input_shape": [3, 32, 32],
+        },
+        "hyper_params": {
+            "learning_rate": 1e-3,
+            "lr_decay": 0.9,
+            "optimizer": "Adam",
+            "adam_betas": (0.9, 0.999),
+            # "momentum": 0.9,
+            "milestones": [10, 20, 30, 40, 50],
         }
     },
     "mlpmixer": {
