@@ -11,9 +11,7 @@ Some open-source model impletations are used in this repo:
 [https://github.com/rishikksh20/MLP-Mixer-pytorch](https://github.com/rishikksh20/MLP-Mixer-pytorch)
 [https://github.com/rishikksh20/FNet-pytorch](https://github.com/rishikksh20/FNet-pytorch)
 
-## Commands
-
-Usage:
+## Usage
 
 ```sh
 python main.py <command> -m <model-type> -d <dataset-name> -n <model-name>
@@ -23,7 +21,7 @@ A command could be: train, test, summary, show
 \
 A dataset_name could be: mnist, cifar-10
 \
-A model_type could be: lenet, mlp1, mlp2, mlp3, vit, mlpmixer, fnet
+A model_type could be: lenet, mlp1, mlp2, mlp3, vit, mlpmixer, vfneta, vfnetb
 \
 Example:
 
@@ -89,15 +87,15 @@ Parameters and conditions are [here](./params.md)
 
 | Model | Accuracy(%) | Train Time(s) | Train Speed(iter/s) | Parameter Size |
 | :---: | :---: | :---: | :---: | :---: |
-| VFNet-A | **63.61** | 432.58 | 72.24 | 10.79k |
+| LeNet-5 | **64.68** | 385.47 | 81.07 | 31.34k |
+| VFNet-A | 64.15 | 432.58 | 72.24 | 10.79k |
 | MLP-Mixer-2 | 58.62 | 706.37 | 44.24 | 34.53k |
 | VIT-2/8\* | 56.24 | 1928.27 | 24.86 | 221.8k |
-| LeNet-5 | 55.31 | 385.47 | 81.07 | 31.34k |
-| VFNet-B | 54.79 | 416.96 | 77.16 | 10.79k |
-| MLP-3 | 50.01 | 368.55 | 84.79 | 937.5k |
-| MLP-2 | 45.60 | 132.79 | 235.32 | 154.1k |
+| VFNet-B | 56.22 | 416.96 | 77.16 | 10.79k |
+| MLP-3 | 50.60 | 368.55 | 84.79 | 937.5k |
+| MLP-2 | 47.04 | 132.79 | 235.32 | 154.1k |
 | Random Forest-100 | 42.22 | 89.59 | -- | -- |
-| Softmax regression | 36.16 | 88.60 | 352.68 | 30.73k |
+| Softmax regression | 39.48 | 88.60 | 352.68 | 30.73k |
 | kNN | 35.78 | 16.52 | -- | -- |
 | Naive Bayes | 29.64 | 3.69 | -- | -- |
 

@@ -17,7 +17,6 @@ class LeNet(nn.Module):
         )
         self.conv2 = nn.Sequential(
             nn.Conv2d(10, 20, kernel_size=5),
-            nn.Dropout2d(),
             nn.MaxPool2d(kernel_size=2),
             nn.LeakyReLU(),
         )
