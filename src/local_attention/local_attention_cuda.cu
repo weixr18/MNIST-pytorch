@@ -8,6 +8,7 @@
 #define GRAD_MAX 1e4
 #define GRAD_MIN -1e4
 
+// #define __DEBUG__
 
 namespace {
 template <typename scalar_t>
@@ -238,10 +239,12 @@ at::Tensor local_attention_forward_cuda(
     const auto chunk_num_y = input_width / chunk_size + 1;
     const dim3 threads (BLOCK_SIZE, BLOCK_SIZE);    // actuallu only (chunk_size, chunk_size) is used.
     const auto block_num = min((size_t)batch_size * channel * chunk_num_x * chunk_num_y, (size_t)65536);
+#ifdef __DEBUG__
     printf("batch size:%lld, channel:%lld, input_height:%lld, input_width:%lld, " \
             "chunk_size:%lld, chunk_num_x:%lld, chunk_num_y:%lld, block_num:%lld\n", 
             batch_size, channel, input_height, input_width, 
             chunk_size, chunk_num_x, chunk_num_y, block_num);
+#endif
     auto output = torch::zeros_like(input);
 
     // Attention!! AT_DISPATCH_FLOATING_TYPES 's 2nd patameter must be same as this function's name!!!
@@ -328,6 +331,7 @@ std::vector<at::Tensor> local_attention_backward_cuda(
     // dispatch parameters
     const dim3 thread_num (chunk_size, chunk_size);    // actuallu only (chunk_size, chunk_size) is used.
     const auto block_num = min((size_t)batch_size * channel_num * chunk_num_x * chunk_num_y, (size_t)65536);
+#ifdef __DEBUG__
     printf( ">>> input_height: %lld, input_width: %lld, kernel_size: %lld, chunk_size: %lld, \n"\
             ">>> batch size: %lld, channel_num: %lld, chunk_num_x: %lld, chunk_num_y: %lld,\n" \
             ">>> kernel_per_h: %lld, kernel_per_w: %lld, kernels_per_chunk: %lld,\n"\
@@ -336,6 +340,7 @@ std::vector<at::Tensor> local_attention_backward_cuda(
             batch_size, channel_num, chunk_num_x, chunk_num_y, 
             kernel_per_h, kernel_per_w, kernels_per_graph, 
             kernel_per_line, kernels_per_chunk, kernel_num, block_num);
+#endif
 
     // 1. calc dL/dT
     auto d_T = torch::zeros_like(x);

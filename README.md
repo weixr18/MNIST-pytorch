@@ -11,6 +11,15 @@ Some open-source model impletations are used in this repo:
 [https://github.com/rishikksh20/MLP-Mixer-pytorch](https://github.com/rishikksh20/MLP-Mixer-pytorch)
 [https://github.com/rishikksh20/FNet-pytorch](https://github.com/rishikksh20/FNet-pytorch)
 
+## Install
+
+To use LocalAttention module, you need to install it.
+
+```sh
+cd src/local_attention
+python setup.py install
+```
+
 ## Usage
 
 ```sh
@@ -21,7 +30,8 @@ A command could be: train, test, summary, show
 \
 A dataset_name could be: mnist, cifar-10
 \
-A model_type could be: lenet, mlp1, mlp2, mlp3, vit, mlpmixer, vfneta, vfnetb
+A model_type could be: lenet, mlp1, mlp2, mlp3, vit, mlpmixer, vfneta, vfnetb, lanet.
+
 \
 Example:
 
@@ -31,9 +41,9 @@ python main.py train -d cifar-10 -m lenet
 
 ## Requirements
 
-+ torch==1.1.0
++ torch==1.7.1
 + torchsummary=1.5.1
-+ torchvision=0.4.1
++ torchvision=0.8.2
 + einops==0.3.0
 + matplotlib=3.3.3
 + numpy=1.19.3

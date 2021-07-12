@@ -19,12 +19,12 @@ RANDOM_SEED = 1
 USE_CUDA = True
 
 
-def summary(model_type, dataset):
+def summary(model_type, dataset, device="cuda"):
     batch_size = config[dataset][model_type]["train_params"]["batch_size"]
     input_shape = config[dataset][model_type]["train_params"]["input_shape"]
-    net = get_model(net_type=model_type, dataset=dataset)
+    net = get_model(net_type=model_type, dataset=dataset).to(device)
     print("Summary of model {0} on dataset {1}:".format(model_type, dataset))
-    torchsummary.summary(net, tuple(input_shape), batch_size, device="cpu")
+    torchsummary.summary(net, tuple(input_shape), batch_size, device=device)
     pass
 
 

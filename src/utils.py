@@ -12,7 +12,7 @@ def model_class(model_type):
         return 'fancy'
     elif(model_type[:3] == 'mlp'):
         return 'mlp'
-    elif(model_type == 'lenet'):
+    elif(model_type == 'lenet' or model_type == 'lanet'):
         return 'cnn'
     elif(model_type == 'vit'):
         return 'attention'

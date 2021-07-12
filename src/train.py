@@ -82,7 +82,6 @@ class Trainer():
 
         for _ in range(1, epochs+1):
             total_loss = 0
-            self.scheduler.step()
             for data in tqdm(self.train_data_loader, ascii=True, ncols=120):
                 batch_train_x, batch_train_y = data
                 if self.use_cuda:
@@ -96,6 +95,7 @@ class Trainer():
                     net=self.net
                 )
                 total_loss += batch_loss
+            self.scheduler.step()
 
             if (_) % epoch_lapse == 0:
                 val_acc = self.v.validate()

@@ -2,6 +2,7 @@ from .mlp import MLP_1, MLP_2, MLP_3
 from .cnn import LeNet
 from .attention import VIT
 from .fancy import MLPMixer, VFNetA, VFNetB
+from .local_attention import LANet
 from ..config import config
 
 
@@ -19,7 +20,7 @@ def get_model(net_type: str = 'lenet', dataset: str = "mnist"):
     elif(net_type == 'vit'):
         P = config[dataset][net_type]["train_params"]["p_len"]
         n_patches = config[dataset][net_type]["train_params"]["n_patches"]
-        input_channels = config[dataset][net_type]["train_params"]["input_shape"][0]
+        input_channels = input_shape[0]
         return VIT(input_channels=input_channels,
                    num_patches=n_patches,
                    patch_size=P, num_layers=2)
@@ -34,5 +35,12 @@ def get_model(net_type: str = 'lenet', dataset: str = "mnist"):
         return MLPMixer(input_size=input_shape, patch_size=P,
                         hidden_dim_1=hidden_dim_1, hidden_dim_2=hidden_dim_2,
                         num_classes=10, num_layers=2,)
+    elif(net_type == 'lanet'):
+        input_channels = input_shape[0]
+        input_size = input_shape[1:]
+        return LANet(input_channels=input_channels,
+                    kernel_sizes=[3,3],
+                    input_size=input_size,
+                    num_classes=10)
 
     pass
