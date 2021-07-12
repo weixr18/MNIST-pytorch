@@ -14,8 +14,9 @@ at::Tensor local_attention_forward_cuda(
         at::Tensor weight,
         size_t kernel_size);
 std::vector<at::Tensor> local_attention_backward_cuda(
-        at::Tensor d_x,
-        at::Tensor d_weight);
+        at::Tensor d_output,
+        at::Tensor x,
+        at::Tensor weight);
 
 // C++ interface
 #define CHECK_CUDA(x) TORCH_CHECK(x.is_cuda(), #x " must be a CUDA tensor")
@@ -41,12 +42,14 @@ at::Tensor local_attention_forward_cuda_wrapper(
 }
 
 std::vector<at::Tensor> local_attention_backward_cuda_wrapper(
-        at::Tensor d_x,
-        at::Tensor d_weight)
+        at::Tensor d_output,
+        at::Tensor x,
+        at::Tensor weight)
 {
-    CHECK_INPUT(input);
+    CHECK_INPUT(d_output);
+    CHECK_INPUT(x);
     CHECK_INPUT(weight);
-    return local_attention_backward_cuda(d_x, d_weight);
+    return local_attention_backward_cuda(d_output, x, weight);
 }
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) {
