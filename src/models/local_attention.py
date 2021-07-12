@@ -26,6 +26,7 @@ class LABlock(nn.Module):
         self.w = nn.parameter.Parameter(
             torch.Tensor(5, in_channels, kernel_size, kernel_size),
             requires_grad=True)
+        self.w.data.uniform_(-0.01, 0.01)
         self.register_parameter("weight", self.w)
         self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
         
@@ -51,9 +52,11 @@ class LANet(nn.Module):
         super(LANet, self).__init__()
         self.la1 = LABlock(input_channels, hidden_channels[0], kernel_sizes[0])
         self.la2 = LABlock(hidden_channels[0], hidden_channels[1], kernel_sizes[1])
+        self.la3 = LABlock(hidden_channels[1], hidden_channels[1], kernel_sizes[1])
         self.pool1 = nn.MaxPool2d(2, 2, 0)
         self.pool2 = nn.MaxPool2d(2, 2, 0)
-        mlp_input_size = int(hidden_channels[1] * input_size[0] * input_size[1] / 16)
+        self.pool3 = nn.MaxPool2d(2, 2, 0)
+        mlp_input_size = hidden_channels[1] *int(input_size[0]/2/2/2) * int(input_size[1]/2/2/2)
         self.head = nn.Sequential(
             nn.Linear(mlp_input_size, hidden_channels[2]), 
             nn.Linear(hidden_channels[2], num_classes), 
@@ -65,6 +68,8 @@ class LANet(nn.Module):
         x = self.pool1(x)
         x = self.la2(x)
         x = self.pool2(x)
+        x = self.la3(x)
+        x = self.pool3(x)
         x = x.flatten(start_dim=1)
         x = self.head(x)
         return x

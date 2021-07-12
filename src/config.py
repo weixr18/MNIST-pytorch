@@ -25,7 +25,7 @@ mnist_config = {
             "input_shape": [1, 28, 28],
         },
         "hyper_params": {
-            "learning_rate": 1e-3,
+            "learning_rate": 1e-2,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
@@ -151,6 +151,27 @@ cifar_10_config = {
                 40, 42, 44, 46, 48, 50,
                 52, 54, 56, 58, 60
             ],
+        }
+    },
+    "lanet": {
+        "train_params": {
+            "batch_size": 64,
+            "epochs": 50,
+            "epoch_lapse": 5,
+            "epoch_save": 10,
+            "input_shape": [3, 32, 32],
+        },
+        "hyper_params": {
+            "learning_rate": 1e-3,
+            "optimizer": "Adam",
+            "adam_betas": (0.9, 0.999),
+            # "momentum": 0.9,
+            "milestones":[
+                10, 15, 20, 25, 30, 35,
+                40, 42, 44, 46, 48, 50,
+                52, 54, 56, 58, 60
+            ],
+            "lr_decay":0.9
         }
     },
     "mlp1": {
