@@ -4,13 +4,6 @@ Train various models on MNIST and other datasets!
 \
 We will select models and datasets as small as possible so that these models can be easily trained on a laptop's GPU.
 
-## Acknowledgement
-
-Some open-source model impletations are used in this repo:
-
-[https://github.com/rishikksh20/MLP-Mixer-pytorch](https://github.com/rishikksh20/MLP-Mixer-pytorch)
-[https://github.com/rishikksh20/FNet-pytorch](https://github.com/rishikksh20/FNet-pytorch)
-
 ## Install
 
 To use LocalAttention module, you need to install it.
@@ -81,11 +74,12 @@ Condition:
 | MLP-3  | 97.60 | 28.94 | 270.94 | 251.06k |
 | VFNet-2 | 97.32 | 59.27 | 132.28 | 8.49k |
 | Random Forest-1000 | 97.09 | 310.36 | -- | -- |
-| kNN | 97.08 | **11.74** | -- | -- |
+| kNN | 97.08 | **11.74**(val) | -- | -- |
 | MLP-Mixer-2 | 96.90 | 127.78 | 61.29  | 20.47k |
 | VIT-2  | 96.41 | 291.79 | 26.82 | 217.01k |
 | MLP-2  | 96.78 | 23.25 | 336.30 | 39.76k |
 | Softmax regression\* | 92.15 | 17.22 | 454.07 | **7.85k** |
+| LANet\* | 90.42 | 233.34 | 33.46 | 164.57k |
 
 \* softmax regression \= MLP-1, or one-layer perceptron.
 
@@ -110,3 +104,10 @@ Parameters and conditions are [here](./params.md)
 | Naive Bayes | 29.64 | 3.69 | -- | -- |
 
 \* VIT-2/p means a ViT with 2 encoder blocks and patch_size=p.
+
+## Acknowledgement
+
+Some open-source model impletations are used in this repo:
+
+[https://github.com/rishikksh20/MLP-Mixer-pytorch](https://github.com/rishikksh20/MLP-Mixer-pytorch)
+[https://github.com/rishikksh20/FNet-pytorch](https://github.com/rishikksh20/FNet-pytorch)
