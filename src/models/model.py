@@ -38,8 +38,9 @@ def get_model(net_type: str = 'lenet', dataset: str = "mnist"):
     elif(net_type == 'lanet'):
         input_channels = input_shape[0]
         input_size = input_shape[1:]
+        kernel_sizes = config[dataset][net_type]["train_params"]["kernel_sizes"]
         return LANet(input_channels=input_channels,
-                    kernel_sizes=[3,3],
+                    kernel_sizes=kernel_sizes,
                     input_size=input_size,
                     num_classes=10)
 

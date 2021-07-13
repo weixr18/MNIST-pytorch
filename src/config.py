@@ -19,18 +19,22 @@ mnist_config = {
     "lanet": {
         "train_params": {
             "batch_size": 64,
-            "epochs": 10,
+            "epochs": 50,
             "epoch_lapse": 1,
-            "epoch_save": 20,
+            "epoch_save": 10,
             "input_shape": [1, 28, 28],
+            "kernel_sizes": [5,3],
         },
         "hyper_params": {
             "learning_rate": 1e-2,
             "optimizer": "SGD",
             # "adam_betas": (0.9, 0.999),
             "momentum": 0.9,
-            "milestones":[10,20,30,40,50],
-            "lr_decay":1
+            "milestones":
+                list(range(0, 10, 5))+\
+                list(range(10, 30, 3))+\
+                list(range(30, 50, 3)),
+            "lr_decay":0.9
         }
     },
     "mlp1": {
@@ -156,21 +160,19 @@ cifar_10_config = {
     "lanet": {
         "train_params": {
             "batch_size": 64,
-            "epochs": 50,
+            "epochs": 150,
             "epoch_lapse": 5,
             "epoch_save": 10,
             "input_shape": [3, 32, 32],
+            "kernel_sizes": [3,3],
         },
         "hyper_params": {
-            "learning_rate": 1e-3,
+            "learning_rate": 3e-4,
             "optimizer": "Adam",
             "adam_betas": (0.9, 0.999),
             # "momentum": 0.9,
-            "milestones":[
-                10, 15, 20, 25, 30, 35,
-                40, 42, 44, 46, 48, 50,
-                52, 54, 56, 58, 60
-            ],
+            "milestones":
+            list(range(0, 50, 10))+list(range(50, 150, 5)),
             "lr_decay":0.9
         }
     },

@@ -7,9 +7,9 @@ import local_att
 # TODO:
 # 1. cuda实现反向传播 √
 # 2. 样例验证算法实现正确性 √
-# 3. 搭建LANet
-# 4. 小数据集上训练，验证反传算法正确性
-# 5. 和CNN网络比较模型大小、占用空间、推理速度等 
+# 3. 搭建LANet √
+# 4. 小数据集上训练，验证反传算法正确性 √
+# 5. 和CNN网络比较模型大小、占用空间、推理速度等 √
 
 def local_attention_forward_cpu(X:torch.Tensor, w:torch.Tensor, kernel_size:int):
     wA = w[0]

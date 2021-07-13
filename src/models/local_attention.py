@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 from torch.autograd import Function
@@ -29,6 +28,7 @@ class LABlock(nn.Module):
         self.w.data.uniform_(-0.01, 0.01)
         self.register_parameter("weight", self.w)
         self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
+        self.bn = nn.BatchNorm2d(out_channels)
         
     def forward(self, x):
         initial_x = x.shape[2]
@@ -40,6 +40,10 @@ class LABlock(nn.Module):
         att = torch.softmax(att, dim=1)
         x1 = x * att  + x
         x = self.conv(x1)
+        # x = LocalAttention.apply(x, self.w)
+        # x = att + x
+        # x = self.conv(x)
+        # x = self.bn(x)
         x = x[:, :, :initial_x, :initial_y]
         return x
 

@@ -58,7 +58,7 @@ python main.py train -d cifar-10 -m lenet
 
 ### MNIST
 
-Condition:
+Cinfigurations:
 
 + Learning rate: 0.01
 + Optimizer: SGD
@@ -78,23 +78,24 @@ Condition:
 | MLP-Mixer-2 | 96.90 | 127.78 | 61.29  | 20.47k |
 | VIT-2  | 96.41 | 291.79 | 26.82 | 217.01k |
 | MLP-2  | 96.78 | 23.25 | 336.30 | 39.76k |
+| LANet-5/3\*\* | 94.50 | 227.34 | 24.46 | 43.61k |
 | Softmax regression\* | 92.15 | 17.22 | 454.07 | **7.85k** |
-| LANet\* | 91.07 | 227.34 | 24.46 | 43.61k |
 
 \* softmax regression \= MLP-1, or one-layer perceptron.
+\*\* epoches = 50
 
 Comment: Note the line for knn(k-nearest neighbor). One thing I have to point out is that the hyperparameter used in this result is k=1 and the distance is the cosine distance. This means: simply comparing the cosine distance of the test sample to each training sample and then outputting the label of the nearest training sample achieves an accuracy of 97.01% on MNIST ...... The fact shows that this dataset is really too simple and these results are in fact not very informative.
 
 ### CIFAR-10
 
-Parameters and conditions are [here](./params.md)
+Hyper parameters and training configurations are [here](./params.md)
 
 | Model | Accuracy(%) | Train Time(s) | Train Speed(iter/s) | Parameter Size |
 | :---: | :---: | :---: | :---: | :---: |
 | LeNet-5 | **64.68** | 385.47 | 81.07 | 31.34k |
 | VFNet-A | 64.15 | 432.58 | 72.24 | 10.79k |
+| LANet-3/5 | 59.36 | 2321.12 | 20.68 | 66.23k |
 | MLP-Mixer-2 | 59.18 | 706.37 | 44.24 | 34.53k |
-| LANet | 58.44 | 2321.12 | 20.68 | 66.23k |
 | VIT-2/8\* | 56.69 | 1928.27 | 24.86 | 221.8k |
 | VFNet-B | 56.22 | 416.96 | 77.16 | 10.79k |
 | MLP-3 | 50.60 | 368.55 | 84.79 | 937.5k |
