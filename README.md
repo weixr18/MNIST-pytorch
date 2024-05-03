@@ -109,7 +109,8 @@ Hyper parameters and training configurations are [here](./params.md)
 
 ## Acknowledgement
 
-Some open-source model impletations are used in this repo:
+Use some code implementations from these repos:
 
 [https://github.com/rishikksh20/MLP-Mixer-pytorch](https://github.com/rishikksh20/MLP-Mixer-pytorch)
+
 [https://github.com/rishikksh20/FNet-pytorch](https://github.com/rishikksh20/FNet-pytorch)
